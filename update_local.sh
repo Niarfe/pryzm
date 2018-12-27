@@ -1,5 +1,5 @@
 #!/bin/bash
 
-sudo pip uninstall prysm
+sudo pip uninstall pryzm
 sudo python setup.py install
-pip list | grep prysm
+pip list | grep pryzm

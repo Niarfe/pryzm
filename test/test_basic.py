@@ -1,7 +1,7 @@
-import prysm
-prysm = prysm.Prysm()
+import pryzm
+pryzm = pryzm.Pryzm()
 def test_red_fg():
-    import prysm
-    prysm = prysm.Prysm()
-    assert "bluh" == prysm.fg_red("blah")
+    import pryzm
+    pryzm = pryzm.Pryzm()
+    assert "bluh" == pryzm.fg_red("blah")
 

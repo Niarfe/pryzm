@@ -2,7 +2,7 @@
 import time
 import sys
 from subprocess import Popen, PIPE
-class Prysm(object):
+class Pryzm(object):
     _cap27 = '\033[27m'
     _text_attributes = {
         'at_off':       0,
@@ -64,7 +64,7 @@ class Prysm(object):
         def fn(self, text):
             return u"\u001b[{0}m{1}\u001b[0m".format(value, text)
 
-        setattr(Prysm, color, fn)
+        setattr(Pryzm, color, fn)
 
         fn.__name__ = color
         fn.__doc__ = "Apply {0} to text".format(color)
@@ -73,7 +73,7 @@ class Prysm(object):
         def fn(self):
             sys.stdout.write(u"\u001b[{0}".format(code))
 
-        setattr(Prysm, function_name, fn)
+        setattr(Pryzm, function_name, fn)
 
         fn.__name__ = function_name
         fn.__doc__ = "Use code {0} to maneuver screen clears".format(code)
@@ -82,7 +82,7 @@ class Prysm(object):
         def fn(self, num):
             sys.stdout.write(u"\u001b[{0}{1}".format(str(num), code))
 
-        setattr(Prysm, function_name, fn)
+        setattr(Pryzm, function_name, fn)
 
         fn.__name__ = function_name
         fn.__doc__ = "Use code {0} to maneuver screen cursor".format(code)
@@ -118,40 +118,40 @@ class Prysm(object):
         return int(out[0]), int(out[1])
 
 if __name__ == "__main__":
-    prysm = Prysm()
-    test_string = prysm.fg_red("Test String") 
+    pryzm = Pryzm()
+    test_string = pryzm.fg_red("Test String") 
     assert u"\u001b[31mTest String\u001b[0m" ==  test_string, "Simple red background"
     print(test_string)
 
-    test_string = prysm.bg_white(prysm.fg_red("Test String"))
+    test_string = pryzm.bg_white(pryzm.fg_red("Test String"))
     assert u"\u001b[47m\u001b[31mTest String\u001b[0m\u001b[0m" ==  test_string, test_string
     print(test_string)
 
-    test_string = prysm.encode([31,47], "Test String")
+    test_string = pryzm.encode([31,47], "Test String")
     assert u"\u001b[31;47mTest String\u001b[0m" ==  test_string, test_string
     print(test_string)
 
 
-    prysm.clear_screen()
-    prysm.set_position(0,0)
-    prysm.write(prysm.bg_red("Efrain"))
-    prysm.move_down(4)
-    prysm.write(prysm.bg_blue("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"))
+    pryzm.clear_screen()
+    pryzm.set_position(0,0)
+    pryzm.write(pryzm.bg_red("Efrain"))
+    pryzm.move_down(4)
+    pryzm.write(pryzm.bg_blue("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"))
     for dt in range(2):
-        prysm.move_right(1)
-        prysm.sleep(1)
-        prysm.write( prysm.bg_cyan("yay"))
-    prysm.set_position(0,10)
+        pryzm.move_right(1)
+        pryzm.sleep(1)
+        pryzm.write( pryzm.bg_cyan("yay"))
+    pryzm.set_position(0,10)
     for dt in range(2):
-        prysm.move_down(1)
-        prysm.sleep(0.5)
-        prysm.write(prysm.bg_red("wow"))
+        pryzm.move_down(1)
+        pryzm.sleep(0.5)
+        pryzm.write(pryzm.bg_red("wow"))
     saystuff = ["Wow", "This", "Is", "Going", "to", "GREAT!"]
     for word in saystuff:
-        prysm.set_position(30,10)
-        prysm.write(prysm.bg_red(word))
-        prysm.sleep(0.5)        
-        prysm.clear_line()
+        pryzm.set_position(30,10)
+        pryzm.write(pryzm.bg_red(word))
+        pryzm.sleep(0.5)        
+        pryzm.clear_line()
 
 
 

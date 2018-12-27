@@ -1,12 +1,12 @@
 #!/usr/bin/env python
-import prysm as pm
+import pryzm as pm
 
 class Window(object):
     wlines = -1
     wcols = -1
 
     def __init__(self):
-        self.pr = pm.Prysm()
+        self.pr = pm.Pryzm()
         self.wlines, self.wcols = self.pr.get_screen_size()
         print "wcols: {0} wlines: {1}".format(str(self.wcols), str(self.wlines))
         self.pr.sleep(0.25)

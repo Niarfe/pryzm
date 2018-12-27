@@ -1,5 +1,6 @@
 # Compiled python modules
 **.pyc
+**/*.pytest_cache
 
 # vim's ubiquitous temporary backup file
 **.swp
@@ -10,3 +11,4 @@
 # no dist versions
 dist/
 build/
+env
