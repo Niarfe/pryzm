@@ -1,14 +1,14 @@
-## Prysm, color convenient class for linux/mac cli
+## Pryzm, color convenient class for linux/mac cli
 
 ### Install it
 
-```sudo pip setup.py install```
-```pip list | grep prysm```
+
+```pip install pryzm```
 
 ### Use it
 ```
-from prysm import *
-pr = Prysm()
+from pryzm import *
+pr = Pryzm()
 print pr.fg('Red Text') # prints in red foreground
 print pr.encode([31,47], "Red font with white background")
 ```
