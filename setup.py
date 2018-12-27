@@ -1,12 +1,14 @@
 from setuptools import setup
 
-setup(name='prysm',
+setup(
+      name='pryzm',
       version='0.4',
       description='Lightweight text coloring for clis',
-      url='https://Niarfe@bitbucket.org/Niarfe/prysm.git',
+      url='https://Niarfe@github.org/Niarfe/pryzm.git',
       author='Efrain Olivares',
       author_email='efrain.olivares@gmail.com',
       license='MIT',
-      packages=['prysm'],
-      zip_safe=False)
+      packages=['pryzm'],
+      zip_safe=False
+)
  
