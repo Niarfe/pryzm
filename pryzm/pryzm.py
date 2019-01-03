@@ -52,22 +52,43 @@ class Pryzm(object):
             'move_column': 'G'
             }
 
-    def set_position(self, x, y):
-        sys.stdout.write(u"\u001b[{0};{1}H".format(str(x), str(y)))
+    def __init__(self, subject=None):
+        self.subject = subject if subject else ''
+        for key, val in self._text_attributes.items():
+            self._add_color(key, val)
+        for key, val in self._clear.items():
+            self._add_clear(key, val)
+        for key, val in self._cursor.items():
+            self._add_cursor(key, val)
 
-    def _add_color(self, color, value):
+    def _add_color(self, color, code):
         """Add dynamic function to insert color code.
-           color: string, the name of the functio to add
-           value: integer, the code value to insert
-           return: function, adds a function named 'color' wrapping test with ascii code.
+            color: string, the name of the function to add
+            value: integer, the code value to insert
+            return: function, adds a function named 'color' wrapping test with ascii code.
         """
-        def fn(self, text):
-            return u"\u001b[{0}m{1}\u001b[0m".format(value, text)
+        def fn(self, text=None):
+            self.subject = text if text else self.subject
+            self.subject =  u"\u001b[{0}m{1}".format(code, self.subject)
+            return self
 
         setattr(Pryzm, color, fn)
 
         fn.__name__ = color
         fn.__doc__ = "Apply {0} to text".format(color)
+
+    def set_position(self, x, y):
+        sys.stdout.write(u"\u001b[{0};{1}H".format(str(x), str(y)))
+
+    def show(self):
+        return self.subject+u"\u001b[0m"
+
+    def print(self):
+        print(self.subject+u"\u001b[0m")
+
+    def __str__(self):
+        return self.subject
+
 
     def _add_clear(self, function_name, code):
         def fn(self):
@@ -88,13 +109,6 @@ class Pryzm(object):
         fn.__doc__ = "Use code {0} to maneuver screen cursor".format(code)
 
 
-    def __init__(self):
-        for key, val in self._text_attributes.items():
-            self._add_color(key, val)
-        for key, val in self._clear.items():
-            self._add_clear(key, val)
-        for key, val in self._cursor.items():
-            self._add_cursor(key, val)
 
     def encode(self, codes, display_text):
         """Convenience method, format codes into ascii wrapper around text.
@@ -117,41 +131,7 @@ class Pryzm(object):
         out = p.stdout.read().decode('ascii').strip().split(' ')
         return int(out[0]), int(out[1])
 
-if __name__ == "__main__":
-    Pryzm = Pryzm()
-    test_string = Pryzm.fg_red("Test String")
-    assert u"\u001b[31mTest String\u001b[0m" ==  test_string, "Simple red background"
-    print(test_string)
 
-    test_string = Pryzm.bg_white(Pryzm.fg_red("Test String"))
-    assert u"\u001b[47m\u001b[31mTest String\u001b[0m\u001b[0m" ==  test_string, test_string
-    print(test_string)
-
-    test_string = Pryzm.encode([31,47], "Test String")
-    assert u"\u001b[31;47mTest String\u001b[0m" ==  test_string, test_string
-    print(test_string)
-
-
-    Pryzm.clear_screen()
-    Pryzm.set_position(0,0)
-    Pryzm.write(Pryzm.bg_red("Efrain"))
-    Pryzm.move_down(4)
-    Pryzm.write(Pryzm.bg_blue("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"))
-    for dt in range(2):
-        Pryzm.move_right(1)
-        Pryzm.sleep(1)
-        Pryzm.write( Pryzm.bg_cyan("yay"))
-    Pryzm.set_position(0,10)
-    for dt in range(2):
-        Pryzm.move_down(1)
-        Pryzm.sleep(0.5)
-        Pryzm.write(Pryzm.bg_red("wow"))
-    saystuff = ["Wow", "This", "Is", "Going", "to", "GREAT!"]
-    for word in saystuff:
-        Pryzm.set_position(30,10)
-        Pryzm.write(Pryzm.bg_red(word))
-        Pryzm.sleep(0.5)
-        Pryzm.clear_line()
 
 
 
