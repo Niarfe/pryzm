@@ -2,64 +2,18 @@
 import time
 import sys
 from subprocess import Popen, PIPE
+from pryzm.codes import cap27, text_attributes
 class Pryzm(object):
-    _cap27 = '\033[27m'
-    _text_attributes = {
-        'at_off':       0,
-        'at_bold':      1,
-        'at_dim':       2,
-        'at_italic':    3,
-        'at_under':     4,
-        'at_blink':     5,
-        'at_reverse':   6,
-        'at_hide':      8,
-
-        'fg_black':     30,
-        'fg_red':       31,
-        'fg_green':     32,
-        'fg_yellow':    33,
-        'fg_blue':      34,
-        'fg_magenta':   35,
-        'fg_cyan':      36,
-        'fg_white':     37,
-
-        'bg_black':     40,
-        'bg_red':       41,
-        'bg_green':     42,
-        'bg_yellow':    43,
-        'bg_blue':      44,
-        'bg_magenta':   45,
-        'bg_cyan':      46,
-        'bg_white':     47,
-    }
-
-    _clear = {
-            'clear_screen': '2J',
-            'clear_screen_to_end': '0J',
-            'clear_screen_to_start': '1J',
-            'clear_line': '2K',
-            'clear_line_to_end': '0K',
-            'clear_line_to_start': '1K',
-            }
-
-    _cursor = {
-            'move_up': 'A',
-            'move_down': 'B',
-            'move_right': 'C',
-            'move_left': 'D',
-            'move_next_line': 'E',
-            'move_prev_line': 'F',
-            'move_column': 'G'
-            }
-
+    _cap27 = cap27
+    _text_attributes = text_attributes
     def __init__(self, subject=None):
         self.subject = subject if subject else ''
         for key, val in self._text_attributes.items():
             self._add_color(key, val)
-        for key, val in self._clear.items():
-            self._add_clear(key, val)
-        for key, val in self._cursor.items():
-            self._add_cursor(key, val)
+        # for key, val in self._clear.items():
+        #     self._add_clear(key, val)
+        # for key, val in self._cursor.items():
+        #     self._add_cursor(key, val)
 
     def _add_color(self, color, code):
         """Add dynamic function to insert color code.
@@ -89,27 +43,6 @@ class Pryzm(object):
     def __str__(self):
         return self.subject
 
-
-    def _add_clear(self, function_name, code):
-        def fn(self):
-            sys.stdout.write(u"\u001b[{0}".format(code))
-
-        setattr(Pryzm, function_name, fn)
-
-        fn.__name__ = function_name
-        fn.__doc__ = "Use code {0} to maneuver screen clears".format(code)
-
-    def _add_cursor(self, function_name, code):
-        def fn(self, num):
-            sys.stdout.write(u"\u001b[{0}{1}".format(str(num), code))
-
-        setattr(Pryzm, function_name, fn)
-
-        fn.__name__ = function_name
-        fn.__doc__ = "Use code {0} to maneuver screen cursor".format(code)
-
-
-
     def encode(self, codes, display_text):
         """Convenience method, format codes into ascii wrapper around text.
             This does NO checking, it simply formats.
@@ -119,17 +52,6 @@ class Pryzm(object):
         codec = ";".join([str(idx) for idx in codes])
         return u"\u001b[{0}m{1}\u001b[0m".format(codec, display_text)
 
-    def sleep(self, t):
-        time.sleep(t)
-
-    def write(self, st):
-        sys.stdout.write(st)
-        sys.stdout.flush()
-
-    def get_screen_size(self):
-        p = Popen('stty size', shell=True, stdout=PIPE, stderr=PIPE)
-        out = p.stdout.read().decode('ascii').strip().split(' ')
-        return int(out[0]), int(out[1])
 
 
 
