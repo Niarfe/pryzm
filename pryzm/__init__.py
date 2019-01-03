@@ -1,1 +1,1 @@
-from .prysm import Prysm
+from pryzm.pryzm import Pryzm
